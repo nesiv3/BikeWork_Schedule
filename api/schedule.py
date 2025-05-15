@@ -16,7 +16,7 @@ async def create_maintenance(schedule: Schedule):
     now = datetime.now(ZoneInfo("America/Bogota")) 
     schedule.created_at = now
     schedule.updated_at = now
-    print(f"Schedule created at {schedule.created_at}")
+ 
     await dispatcher.dispatch(CreateScheduleCommand(schedule))
     return {"status": "created"}
 

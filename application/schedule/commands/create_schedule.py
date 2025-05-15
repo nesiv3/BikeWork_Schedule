@@ -13,10 +13,8 @@ class CreateScheduleHandler:
         self.uow = uow
 
     async def handle(self, command: CreateScheduleCommand):
-        now = datetime.now(ZoneInfo("America/Bogota")) 
-        print(f"Schedule created at {command.schedule.created_at}")
+        now = datetime.now(ZoneInfo("America/Bogota"))       
         command.schedule.created_at = now
-        command.schedule.updated_at = now
-        print(f"Schedule created at {command.schedule.created_at}")
+        command.schedule.updated_at = now     
         async with self.uow:
             await self.uow.schedule_repository.add(command.schedule)

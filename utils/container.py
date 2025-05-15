@@ -1,4 +1,6 @@
+import os
 from motor.motor_asyncio import AsyncIOMotorClient
+from dotenv import load_dotenv
 from infraestructure.repositories.schedule_repository import ScheduleRepositoryMongo
 from infraestructure.unit_of_work import UnitOfWork
 from application.schedule.commands.create_schedule import CreateScheduleCommand, CreateScheduleHandler
@@ -6,6 +8,9 @@ from application.schedule.queries.get_by_store import GetByStoreHandler, GetSche
 from application.schedule.queries.get_by_user import GetByUserHandler, GetScheduleByUserQuery
 from application.mediators.dispatcher import Dispatcher
 
+
+
+load_dotenv()  
 class Container:
     _instance = None
 
@@ -16,9 +21,11 @@ class Container:
         return Container._instance
 
     def __init__(self):
-        client = AsyncIOMotorClient("mongodb+srv://nesiv3:bUdhLOKPpudxbXWj@bikework.omnndyc.mongodb.net/?retryWrites=true&w=majority&appName=bikework")
-        db = client["schedule"]
-
+        mongo_uri = os.getenv("MONGO_URI")
+        mongo_db = os.getenv("MONGO_DB")
+        client = AsyncIOMotorClient(mongo_uri)
+        db = client[mongo_db]
+              
         repo = ScheduleRepositoryMongo(db)
         uow = UnitOfWork(repo)
 
