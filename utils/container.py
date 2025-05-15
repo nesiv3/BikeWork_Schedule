@@ -3,7 +3,7 @@ from infraestructure.repositories.schedule_repository import ScheduleRepositoryM
 from infraestructure.unit_of_work import UnitOfWork
 from application.schedule.commands.create_schedule import CreateScheduleCommand, CreateScheduleHandler
 from application.schedule.queries.get_by_store import GetByStoreHandler, GetScheduleByStoreQuery
-from application.schedule.queries.get_bu_user import GetByUserHandler, GetScheduleByUserQuery
+from application.schedule.queries.get_by_user import GetByUserHandler, GetScheduleByUserQuery
 from application.mediators.dispatcher import Dispatcher
 
 class Container:

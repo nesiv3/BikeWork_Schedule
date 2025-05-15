@@ -1,4 +1,6 @@
 
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from domain.models.schedule import Schedule
 from infraestructure.unit_of_work import UnitOfWork
 
@@ -11,5 +13,10 @@ class CreateScheduleHandler:
         self.uow = uow
 
     async def handle(self, command: CreateScheduleCommand):
+        now = datetime.now(ZoneInfo("America/Bogota")) 
+        print(f"Schedule created at {command.schedule.created_at}")
+        command.schedule.created_at = now
+        command.schedule.updated_at = now
+        print(f"Schedule created at {command.schedule.created_at}")
         async with self.uow:
             await self.uow.schedule_repository.add(command.schedule)

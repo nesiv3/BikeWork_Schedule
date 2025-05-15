@@ -1,17 +1,22 @@
 # api/routes/maintenance.py
+from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, Query
 from datetime import datetime
 from domain.models.schedule import Schedule
 from utils.container import Container
 from application.schedule.commands.create_schedule import CreateScheduleCommand
 from application.schedule.queries.get_by_store import GetScheduleByStoreQuery
-from application.schedule.queries.get_bu_user import GetScheduleByUserQuery
+from application.schedule.queries.get_by_user import GetScheduleByUserQuery
 
 router = APIRouter()
 
 @router.post("/")
 async def create_maintenance(schedule: Schedule):
     dispatcher = Container.instance().dispatcher
+    now = datetime.now(ZoneInfo("America/Bogota")) 
+    schedule.created_at = now
+    schedule.updated_at = now
+    print(f"Schedule created at {schedule.created_at}")
     await dispatcher.dispatch(CreateScheduleCommand(schedule))
     return {"status": "created"}
 
@@ -26,3 +31,10 @@ async def get_by_user(user_id: str, start: datetime = Query(...), end: datetime 
     dispatcher = Container.instance().dispatcher
     result = await dispatcher.dispatch(GetScheduleByUserQuery(user_id, start, end))
     return result
+
+
+
+@router.get("/health")
+async def healt():
+   now = datetime.now(ZoneInfo("America/Bogota")) 
+   return now
