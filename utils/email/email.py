@@ -1,11 +1,18 @@
 import httpx
+import os
+from dotenv import load_dotenv
 from fastapi import HTTPException
+
+
+
+load_dotenv()
+BREVO_API_KEY = os.getenv("BREVO_API_KEY")
 
 async def send_email(email):
     url = "https://api.brevo.com/v3/smtp/email"
     headers = {
         "accept": "application/json",
-        "api-key": "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",
+        "api-key": BREVO_API_KEY,
         "content-type": "application/json"
     }
     payload = {
