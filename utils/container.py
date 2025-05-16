@@ -1,4 +1,6 @@
 import os
+from application.email.commands.send_email import SendEmailCommand, SendEmailHandler
+from application.schedule.commands.update_schedule import UpdateScheduleCommand, UpdateScheduleHandler
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 from infraestructure.repositories.schedule_repository import ScheduleRepositoryMongo
@@ -33,3 +35,5 @@ class Container:
         self.dispatcher.register(CreateScheduleCommand, CreateScheduleHandler(uow))
         self.dispatcher.register(GetScheduleByStoreQuery, GetByStoreHandler(uow))
         self.dispatcher.register(GetScheduleByUserQuery, GetByUserHandler(uow))
+        self.dispatcher.register(UpdateScheduleCommand, UpdateScheduleHandler(uow))
+       

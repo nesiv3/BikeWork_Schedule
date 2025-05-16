@@ -1,9 +1,10 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from pydantic import BaseModel
-from typing import Any
+from typing import Any, Optional
 
 from utils.config import to_colombia_time
+from utils.pyobjectid import PyObjectId
 
 
 
@@ -11,7 +12,9 @@ from utils.config import to_colombia_time
 
 
 class ScheduleResponse(BaseModel):
+    id: Optional[PyObjectId] = None
     date: str  # Ya transformado con strftime
+    period: Optional[str] = None
     maintenance_type: int
     status: str
     observation: str
@@ -25,7 +28,9 @@ class ScheduleResponse(BaseModel):
     @classmethod
     def from_schedule(cls, schedule):
         return cls(
+            id=schedule.id,
             date=schedule.date.strftime("%d-%m-%Y"),
+            period=str(schedule.period) if schedule.period else None,
             maintenance_type=schedule.maintenance_type,
             status=schedule.status,
             observation=schedule.observation,

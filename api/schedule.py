@@ -1,5 +1,7 @@
 # api/routes/maintenance.py
 from zoneinfo import ZoneInfo
+from application.schedule.commands.update_schedule import UpdateScheduleCommand
+from application.schedule.schedule_update_dto import ScheduleDTO
 from fastapi import APIRouter, Depends, Query
 from datetime import datetime
 from domain.models.schedule import Schedule
@@ -38,3 +40,9 @@ async def get_by_user(user_id: str, start: datetime = Query(...), end: datetime 
 async def healt():
    now = datetime.now(ZoneInfo("America/Bogota")) 
    return now
+
+@router.put("/{schedule_id}")
+async def update_schedule(schedule_id: str,schedule: ScheduleDTO):
+    dispatcher = Container.instance().dispatcher
+    await dispatcher.dispatch(UpdateScheduleCommand( schedule_id,schedule))
+    return {"status": "updated"}

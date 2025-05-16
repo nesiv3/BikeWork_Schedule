@@ -3,6 +3,7 @@ from domain.repositories.schedule_repository import ScheduleRepository
 from domain.models.schedule import Schedule
 from typing import List
 from datetime import datetime
+from bson import ObjectId
 
 class ScheduleRepositoryMongo(ScheduleRepository):
     def __init__(self, db: AsyncIOMotorDatabase):
@@ -24,3 +25,9 @@ class ScheduleRepositoryMongo(ScheduleRepository):
             "date": {"$gte": start, "$lte": end}
         })
         return [Schedule(**doc) async for doc in cursor]
+    
+    async def update(self, schedule_id: str, update_data: Schedule):
+        await self.collection.update_one(
+            {"_id": ObjectId(schedule_id)},
+            {"$set": update_data.dict()}
+        )
