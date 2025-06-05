@@ -1,0 +1,13 @@
+from datetime import datetime
+from typing import Optional
+
+class Schedule:
+    def __init__(self, date: datetime, maintenance_type: str, status: str, observation: str, cost: int, estimated_time_minutes: int, user: dict, store: dict):
+        self.date = date
+        self.maintenance_type = maintenance_type
+        self.status = status
+        self.observation = observation
+        self.cost = cost
+        self.estimated_time_minutes = estimated_time_minutes
+        self.user = user
+        self.store = store
